@@ -84,10 +84,6 @@ main{max-width:940px;margin:0 auto;padding:14px;}
 /* ── GRAPHIC ORGANIZER GRID — stacks on mobile ── */
 .go-grid{display:grid;gap:0;border:1px solid #dde;border-radius:8px;overflow:hidden;margin:8px 0;}
 .go-2col{grid-template-columns:1fr 1fr;}
-@media(max-width:600px){
-  .go-2col{grid-template-columns:1fr;}
-  .go-2col .go-header:not(.full){border-bottom:1px solid rgba(255,255,255,.2);}
-}
 .go-header{background:var(--navy);color:#fff;padding:9px 12px;font-weight:700;font-size:.83rem;text-align:center;}
 .go-header.gold{background:var(--gold);color:var(--navy);}
 .go-header.teal{background:var(--teal);}
@@ -250,13 +246,12 @@ main{max-width:940px;margin:0 auto;padding:14px;}
   </nav>
 </header>
 <main>
-PLACEHOLDER_PANELS
 
 
 <div class="panel active" id="panel-home">
   <div class="welcome-box">
     <h2>KHS VUS SOL Complete Review</h2>
-    <p>All 13 Standards &bull; Content Notes &bull; Graphic Organizers &bull; Primary Sources &bull; 62-Card Flashcards &bull; Practice Quiz</p>
+    <p>All 13 standards &bull; Expanded content notes &bull; Graphic organizers &bull; Primary sources &bull; 62-card flashcards &bull; Practice quiz</p>
   </div>
   <div class="home-grid">
     <div class="home-card" onclick="showPanel('vus1')"><div class="hc-emoji">🔍</div><div class="hc-std">VUS.1</div><div class="hc-title">Historical Skills</div></div>
@@ -569,6 +564,21 @@ function showComplete(){
 }
 function updateGlobalScore(){document.getElementById('globalScore').textContent='Quiz: '+score+'/'+total;}
 </script>
+<script>
+if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js');});}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(!sessionStorage.getItem('iBd')){setTimeout(()=>document.getElementById('installBanner').classList.add('show'),3000);}});
+function installApp(){if(!deferredPrompt)return;document.getElementById('installBanner').classList.remove('show');deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});}
+function dismissBanner(){document.getElementById('installBanner').classList.remove('show');sessionStorage.setItem('iBd','1');}
+window.addEventListener('appinstalled',()=>document.getElementById('installBanner').classList.remove('show'));
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone&&!localStorage.getItem('iosTipDismissed')){setTimeout(()=>document.getElementById('iosTip').classList.add('show'),4000);}
+function dismissIosTip(){document.getElementById('iosTip').classList.remove('show');localStorage.setItem('iosTipDismissed','1');}
+function showToast(id,d){const el=document.getElementById(id);el.classList.add('show');setTimeout(()=>el.classList.remove('show'),d||3000);}
+window.addEventListener('offline',()=>showToast('offlineToast',5000));
+window.addEventListener('online',()=>showToast('onlineToast',3000));
+if(!navigator.onLine)setTimeout(()=>showToast('offlineToast',5000),1000);
+</script>
+
 <script>
 if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js');});}
 let deferredPrompt=null;
