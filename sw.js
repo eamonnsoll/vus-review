@@ -2,7 +2,7 @@
 // Cache-first strategy: serve from cache instantly, update in background.
 // Version bump forces a cache refresh when you update the app.
 
-const CACHE_NAME = 'vus-review-v1';
+const CACHE_NAME = 'vus-review-v4';
 
 // All files this app needs to work offline
 const ASSETS = [
